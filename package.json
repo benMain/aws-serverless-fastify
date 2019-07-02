@@ -1,0 +1,92 @@
+{
+  "name": "aws-serverless-fastify",
+  "version": "1.0.0",
+  "description": "Proxy Library for the Fastify Web Server",
+  "author": "Benjamin Main",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "keywords": [
+    "fastify",
+    "serverless",
+    "lambda",
+    "aws",
+    "proxy"
+  ],
+  "publishConfig": {
+    "registry": "https://nexus.services.aws.lumeris.com:8443/repository/npm_private/"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bmain/aws-serverless-fastify.git"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage"
+  },
+  "dependencies": {
+    "binary-case": "^1.1.4",
+    "type-is": "^1.6.18"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.27",
+    "@types/express": "^4.16.0",
+    "@types/jest": "^23.3.13",
+    "@types/node": "^10.12.18",
+    "@types/supertest": "^2.0.7",
+    "@types/type-is": "^1.6.2",
+    "concurrently": "^4.1.0",
+    "fastify": "^2.6.0",
+    "husky": "^2.7.0",
+    "jest": "^24.8.0",
+    "lint-staged": "^8.2.1",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.15.3",
+    "supertest": "^3.4.1",
+    "ts-jest": "24.0.2",
+    "ts-node": "8.1.0",
+    "tsconfig-paths": "3.8.0",
+    "tslint": "5.16.0",
+    "typescript": "3.4.3",
+    "wait-on": "^3.2.0"
+  },
+  "peerDependencies": {
+    "fastify": "^2.6.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "tslint -p tsconfig.json -c tslint.json",
+      "jest --findRelatedTests"
+    ],
+    "./**/*.{js,json,css,md}": [
+      "prettier --write \"src/**/*.ts\"",
+      "git add"
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  }
+}
