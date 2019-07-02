@@ -1,0 +1,46 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8.16.0
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: Install Dependencies
+          command: |
+            npm install
+      - save_cache:
+          paths:
+            - ./node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Build
+          command: |
+            npm run build
+      - run:
+          name: Test
+          command: |
+            npm run test:cov
+      - run:
+          name: Lint
+          command: |
+            npm run lint
+      - run:
+          name: release
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              npm run release
+            else
+              echo "Not Master, will not Deploy..."
+            fi 

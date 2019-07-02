@@ -13,15 +13,16 @@
     "aws",
     "proxy"
   ],
-  "publishConfig": {
-    "registry": "https://nexus.services.aws.lumeris.com:8443/repository/npm_private/"
+  "homepage": "https://github.com/benMain/aws-serverless-fastify",
+  "bugs": {
+    "url": "https://github.com/benMain/aws-serverless-fastify/issues"
   },
   "files": [
     "dist"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/bmain/aws-serverless-fastify.git"
+    "url": "https://github.com/benMain/aws-serverless-fastify.git"
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
@@ -29,13 +30,18 @@
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
-    "test:cov": "jest --coverage"
+    "test:cov": "jest --coverage",
+    "release": "semantic-release",
+    "release-local": "node -r dotenv/config node_modules/semantic-release/bin/semantic-release --no-ci --dry-run"
   },
   "dependencies": {
     "binary-case": "^1.1.4",
     "type-is": "^1.6.18"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/git": "^7.0.16",
+    "@semantic-release/npm": "^5.1.13",
     "@types/aws-lambda": "^8.10.27",
     "@types/express": "^4.16.0",
     "@types/jest": "^23.3.13",
@@ -59,6 +65,36 @@
   },
   "peerDependencies": {
     "fastify": "^2.6.0"
+  },
+  "release": {
+    "verifyConditions": [
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git",
+      "@semantic-release/github"
+    ],
+    "publish": [
+      "@semantic-release/changelog",
+      {
+        "path": "@semantic-release/npm",
+        "npmPublish": true,
+        "tarballDir": "dist"
+      },
+      {
+        "path": "@semantic-release/git",
+        "assets": [
+          "package.json",
+          "package-lock.json",
+          "CHANGELOG.md",
+          "dist/**/*.{js|css}"
+        ],
+        "message": "chore(release): version ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      },
+      {
+        "path": "@semantic-release/github",
+        "assets": "dist/*.tgz"
+      }
+    ]
   },
   "husky": {
     "hooks": {
