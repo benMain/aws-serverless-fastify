@@ -19,7 +19,7 @@ export function proxy(
       reject,
     };
     const resolver = {
-      succeed: (data: APIGatewayProxyResult ) => {
+      succeed: (data: APIGatewayProxyResult) => {
         return promise.resolve(data);
       },
     };

@@ -1,12 +1,13 @@
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { format } from 'url';
+import { RequestOptions } from 'http';
 
 export class RequestMapper {
   public static mapApiGatewayEventToHttpRequest(
     event: APIGatewayProxyEvent,
     context: Context,
-    socketPath: any,
-  ) {
+    socketPath: string,
+  ): RequestOptions {
     const headers: { [name: string]: any } = Object.assign({}, event.headers);
 
     if (event.body && !headers['Content-Length']) {

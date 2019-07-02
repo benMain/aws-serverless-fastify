@@ -3,8 +3,8 @@ import { APIGatewayProxyResult } from 'aws-lambda';
 import { is } from 'type-is';
 import * as binarycase from 'binary-case';
 
-export class ResponseForwarder {
-  public static forwardResponseToApiGateway(
+export class ResponseBuilder {
+  public static buildResponseToApiGateway(
     response: IncomingMessage,
     resolver: { succeed: (data: APIGatewayProxyResult) => void },
     binaryTypes: string[],
@@ -39,10 +39,10 @@ export class ResponseForwarder {
           }
         });
 
-        const contentType = ResponseForwarder.getContentType({
+        const contentType = ResponseBuilder.getContentType({
           contentTypeHeader: headers['content-type'],
         });
-        const isBase64Encoded = ResponseForwarder.isContentTypeBinaryMimeType({
+        const isBase64Encoded = ResponseBuilder.isContentTypeBinaryMimeType({
           contentType,
           binaryMimeTypes: binaryTypes,
         });
@@ -58,7 +58,7 @@ export class ResponseForwarder {
       });
   }
 
-  public static forwardConnectionErrorResponseToApiGateway(
+  public static buildConnectionErrorResponseToApiGateway(
     error: Error,
     resolver: { succeed: (data: APIGatewayProxyResult) => void },
   ) {
@@ -74,7 +74,7 @@ export class ResponseForwarder {
     resolver.succeed(errorResponse);
   }
 
-  public static forwardLibraryErrorResponseToApiGateway(
+  public static buildLibraryErrorResponseToApiGateway(
     error: Error,
     resolver: { succeed: (data: APIGatewayProxyResult) => void },
   ) {

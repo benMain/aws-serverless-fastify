@@ -6,8 +6,9 @@ import {
 } from 'aws-lambda';
 import { RequestMapper } from './request-mapper';
 import { SocketManager } from './socket-manager';
-import { ResponseForwarder } from './response-forwarder';
+import { ResponseBuilder } from './response-builder';
 import { AddressInfo } from 'net';
+import { RequestOptions } from 'https';
 
 export class RequestForwarder {
   public static forwardRequestToNodeServer(
@@ -18,7 +19,7 @@ export class RequestForwarder {
     binaryTypes: string[],
   ): void {
     try {
-      const requestOptions = RequestMapper.mapApiGatewayEventToHttpRequest(
+      const requestOptions: RequestOptions = RequestMapper.mapApiGatewayEventToHttpRequest(
         event,
         context,
         SocketManager.getSocketPath(
@@ -26,7 +27,7 @@ export class RequestForwarder {
         ),
       );
       const req = request(requestOptions, response =>
-        ResponseForwarder.forwardResponseToApiGateway(
+        ResponseBuilder.buildResponseToApiGateway(
           response,
           resolver,
           binaryTypes,
@@ -38,14 +39,14 @@ export class RequestForwarder {
       }
       req
         .on('error', error =>
-          ResponseForwarder.forwardConnectionErrorResponseToApiGateway(
+        ResponseBuilder.buildConnectionErrorResponseToApiGateway(
             error,
             resolver,
           ),
         )
         .end();
     } catch (error) {
-      ResponseForwarder.forwardLibraryErrorResponseToApiGateway(
+      ResponseBuilder.buildLibraryErrorResponseToApiGateway(
         error,
         resolver,
       );
