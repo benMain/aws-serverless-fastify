@@ -36,11 +36,3 @@ jobs:
           name: Lint
           command: |
             npm run lint
-      - run:
-          name: release
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              npm run release
-            else
-              echo "Not Master, will not Deploy..."
-            fi 

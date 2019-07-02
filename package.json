@@ -39,9 +39,6 @@
     "type-is": "^1.6.18"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^3.0.4",
-    "@semantic-release/git": "^7.0.16",
-    "@semantic-release/npm": "^5.1.13",
     "@types/aws-lambda": "^8.10.27",
     "@types/express": "^4.16.0",
     "@types/jest": "^23.3.13",
@@ -65,36 +62,6 @@
   },
   "peerDependencies": {
     "fastify": "^2.6.0"
-  },
-  "release": {
-    "verifyConditions": [
-      "@semantic-release/changelog",
-      "@semantic-release/npm",
-      "@semantic-release/git",
-      "@semantic-release/github"
-    ],
-    "publish": [
-      "@semantic-release/changelog",
-      {
-        "path": "@semantic-release/npm",
-        "npmPublish": true,
-        "tarballDir": "dist"
-      },
-      {
-        "path": "@semantic-release/git",
-        "assets": [
-          "package.json",
-          "package-lock.json",
-          "CHANGELOG.md",
-          "dist/**/*.{js|css}"
-        ],
-        "message": "chore(release): version ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
-      },
-      {
-        "path": "@semantic-release/github",
-        "assets": "dist/*.tgz"
-      }
-    ]
   },
   "husky": {
     "hooks": {
