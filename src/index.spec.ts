@@ -37,7 +37,6 @@ function buildGetEvent(): APIGatewayProxyEvent {
   return {
     body: null,
     headers: {
-      Accept: 'application/json',
       'Accept-Encoding': 'gzip, deflate, sdch',
       'Accept-Language': 'en-US,en;q=0.8',
       'Cache-Control': 'max-age=0',
@@ -47,10 +46,8 @@ function buildGetEvent(): APIGatewayProxyEvent {
       'CloudFront-Is-SmartTV-Viewer': 'false',
       'CloudFront-Is-Tablet-Viewer': 'false',
       'CloudFront-Viewer-Country': 'US',
-      Host: '1234567890.execute-api.us-east-1.amazonaws.com',
       'Upgrade-Insecure-Requests': '1',
       'User-Agent': 'Custom User Agent String',
-      Via: '1.1 08f323deadbeefa7af34d5feb414ce27.cloudfront.net (CloudFront)',
       'X-Amz-Cf-Id': 'cDehVQoZnx43VYQb9j2-nvCh-9z396Uhbp027Y2JvkCPNLmGJHqlaA==',
       'X-Forwarded-For': '127.0.0.1, 127.0.0.2',
       'X-Forwarded-Port': '443',
