@@ -1,12 +1,12 @@
-import { Server } from 'http';
+import { IncomingMessage } from 'http';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { is } from 'type-is';
 import * as binarycase from 'binary-case';
 
 export class ResponseForwarder {
   public static forwardResponseToApiGateway(
-    response,
-    resolver: { succeed: (arg0: { response: APIGatewayProxyResult }) => void },
+    response: IncomingMessage,
+    resolver: { succeed: (data: APIGatewayProxyResult) => void },
     binaryTypes: string[],
   ) {
     const buf = [];
@@ -16,7 +16,9 @@ export class ResponseForwarder {
       .on('end', () => {
         const bodyBuffer = Buffer.concat(buf);
         const statusCode = response.statusCode;
-        const headers = response.headers;
+        const headers = response.headers as {
+          [header: string]: string | number | boolean;
+        };
 
         if (headers['transfer-encoding'] === 'chunked') {
           delete headers['transfer-encoding'];
@@ -25,14 +27,14 @@ export class ResponseForwarder {
         // HACK: modifies header casing to get around API Gateway's limitation of not allowing multiple
         // headers with the same name, as discussed on the AWS Forum https://forums.aws.amazon.com/message.jspa?messageID=725953#725953
         Object.keys(headers).forEach(h => {
-          if (Array.isArray(headers[h])) {
+          if (Array.isArray(h)) {
             if (h.toLowerCase() === 'set-cookie') {
-              headers[h].forEach((value: any, i: number) => {
+              h.forEach((value: any, i: number) => {
                 headers[binarycase(h, i + 1)] = value;
               });
               delete headers[h];
             } else {
-              headers[h] = headers[h].join(',');
+              headers[h] = h.join(',');
             }
           }
         });
@@ -45,54 +47,50 @@ export class ResponseForwarder {
           binaryMimeTypes: binaryTypes,
         });
         const body = bodyBuffer.toString(isBase64Encoded ? 'base64' : 'utf8');
-        const successResponse = { statusCode, body, headers, isBase64Encoded };
+        const successResponse: APIGatewayProxyResult = {
+          statusCode,
+          body,
+          headers,
+          isBase64Encoded,
+        };
 
-        resolver.succeed({ response: successResponse });
+        resolver.succeed(successResponse);
       });
   }
 
   public static forwardConnectionErrorResponseToApiGateway(
     error: Error,
-    resolver: {
-      succeed: (arg0: {
-        response: { statusCode: number; body: string; headers: {} };
-      }) => void;
-    },
+    resolver: { succeed: (data: APIGatewayProxyResult) => void },
   ) {
     // tslint:disable-next-line: no-console
     console.log('ERROR: aws-serverless-fastify connection error');
     // tslint:disable-next-line: no-console
     console.error(error);
-    const errorResponse = {
+    const errorResponse: APIGatewayProxyResult = {
       statusCode: 502,
       body: '',
       headers: {},
     };
-
-    resolver.succeed({ response: errorResponse });
+    resolver.succeed(errorResponse);
   }
 
   public static forwardLibraryErrorResponseToApiGateway(
     error: Error,
-    resolver: {
-      succeed: (arg0: {
-        response: { statusCode: number; body: string; headers: {} };
-      }) => void;
-    },
+    resolver: { succeed: (data: APIGatewayProxyResult) => void },
   ) {
-    console.log('ERROR: aws-serverless-express error');
+    // tslint:disable-next-line: no-console
+    console.log('ERROR: aws-serverless-fastify error');
+    // tslint:disable-next-line: no-console
     console.error(error);
-    const errorResponse = {
+    const errorResponse: APIGatewayProxyResult = {
       statusCode: 500,
       body: '',
       headers: {},
     };
-
-    resolver.succeed({ response: errorResponse });
+    resolver.succeed(errorResponse);
   }
 
   private static getContentType(params: { contentTypeHeader: any }) {
-    // only compare mime type; ignore encoding part
     return params.contentTypeHeader
       ? params.contentTypeHeader.split(';')[0]
       : '';

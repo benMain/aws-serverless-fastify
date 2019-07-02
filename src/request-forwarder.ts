@@ -1,28 +1,35 @@
-import { request } from 'http';
-import { APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { request, Server } from 'http';
+import {
+  APIGatewayProxyEvent,
+  Context,
+  APIGatewayProxyResult,
+} from 'aws-lambda';
 import { RequestMapper } from './request-mapper';
 import { SocketManager } from './socket-manager';
 import { ResponseForwarder } from './response-forwarder';
-import { FastifyServerContainer } from './fastify-server-container';
+import { AddressInfo } from 'net';
 
 export class RequestForwarder {
   public static forwardRequestToNodeServer(
-    serverContainer: FastifyServerContainer,
+    server: Server,
     event: APIGatewayProxyEvent,
     context: Context,
-    resolver: { succeed: (params2: any) => any },
-  ): FastifyServerContainer {
+    resolver: { succeed: (data: APIGatewayProxyResult) => void },
+    binaryTypes: string[],
+  ): void {
     try {
       const requestOptions = RequestMapper.mapApiGatewayEventToHttpRequest(
         event,
         context,
-        SocketManager.getSocketPath(serverContainer.socketSuffix),
+        SocketManager.getSocketPath(
+          (server.address() as AddressInfo).port.toString(),
+        ),
       );
       const req = request(requestOptions, response =>
         ResponseForwarder.forwardResponseToApiGateway(
           response,
           resolver,
-          serverContainer.binaryTypes,
+          binaryTypes,
         ),
       );
       if (event.body) {
@@ -42,7 +49,6 @@ export class RequestForwarder {
         error,
         resolver,
       );
-      return serverContainer;
     }
   }
 }
