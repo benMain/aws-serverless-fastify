@@ -22,6 +22,7 @@ TODO
 ## Support
 
 Pull Requests are welcome! We just thought this was a cool idea to simplify!
+Important: Commits should follow Angluar conventional-changelog format :)
 
 ## Stay in touch
 
