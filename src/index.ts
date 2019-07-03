@@ -6,9 +6,10 @@ import {
 } from 'aws-lambda';
 import { RequestForwarder } from './request-forwarder';
 import { SocketManager } from './socket-manager';
+import * as fastify from 'fastify';
 
 export function proxy(
-  server: Server,
+  fastifyInstance: fastify.FastifyInstance,
   event: APIGatewayProxyEvent,
   context: Context,
   binaryTypes?: string[],
@@ -24,9 +25,9 @@ export function proxy(
       },
     };
     binaryTypes = binaryTypes ? binaryTypes.slice() : [];
-    if (server.listening) {
+    if (fastifyInstance.server.listening) {
       RequestForwarder.forwardRequestToNodeServer(
-        server,
+        fastifyInstance.server,
         event,
         context,
         resolver,
@@ -34,9 +35,9 @@ export function proxy(
       );
     } else {
       const socketSuffix = SocketManager.getSocketSuffix();
-      startServer(server, socketSuffix).on('listening', () =>
+      startFastify(fastifyInstance, socketSuffix).on('listening', () =>
         RequestForwarder.forwardRequestToNodeServer(
-          server,
+          fastifyInstance.server,
           event,
           context,
           resolver,
@@ -47,6 +48,7 @@ export function proxy(
   });
 }
 
-function startServer(server: Server, socketSuffix: string): Server {
-  return server.listen(SocketManager.getSocketPath(socketSuffix));
+function startFastify(instance: fastify.FastifyInstance, socketSuffix: string): Server {
+  instance.listen(SocketManager.getSocketPath(socketSuffix));
+  return instance.server;
 }
