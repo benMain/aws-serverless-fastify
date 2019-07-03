@@ -24,6 +24,10 @@
     "type": "git",
     "url": "https://github.com/benMain/aws-serverless-fastify.git"
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "tag": "latest"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
@@ -39,6 +43,7 @@
     "type-is": "^1.6.18"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.4",
     "@types/aws-lambda": "^8.10.27",
     "@types/express": "^4.16.0",
     "@types/jest": "^23.3.13",
@@ -95,10 +100,14 @@
         }
       ],
       "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
       "@semantic-release/error",
-      "@semantic-release/npm",
-      "@semantic-release/git",
-      "@semantic-release/github"
+      "@semantic-release/npm"
     ]
   },
   "husky": {
