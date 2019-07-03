@@ -99,7 +99,14 @@
           }
         }
       ],
-      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": true,
+          "tarballDir": "dist"
+        }
+      ],
       [
         "@semantic-release/git",
         {
@@ -113,12 +120,11 @@
         }
       ],
       [
-        "@semantic-release/changelog",
+        "@semantic-release/github",
         {
-          "changelogFile": "CHANGELOG.md"
+          "assets": "dist/*.tgz"
         }
-      ],
-      "@semantic-release/npm"
+      ]
     ]
   },
   "husky": {
