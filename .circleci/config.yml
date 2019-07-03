@@ -48,6 +48,10 @@ jobs:
           command: |
             npm install
       - run:
+          name: Build
+          command: |
+            npm run build
+      - run:
           name: Release
           command: |
             npx semantic-release
