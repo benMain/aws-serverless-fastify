@@ -1,6 +1,6 @@
 {
   "name": "aws-serverless-fastify",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Proxy Library for the Fastify Web Server",
   "author": "Benjamin Main",
   "license": "MIT",
