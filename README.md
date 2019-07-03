@@ -17,7 +17,7 @@ $ npm install aws-serverless-fastify
 
 ## Example
 
-TODO
+I will provide an example.
 
 ## Support
 
