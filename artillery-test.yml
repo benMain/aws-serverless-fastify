@@ -1,0 +1,17 @@
+config:
+  target: 'https://dev-customerservice.api.lumeris.io/api/members'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+  defaults:
+    headers:
+      Accept: 'application/json'
+      x-api-key: "{{ $processEnvironment.X_API_KEY }}"
+  payload:
+    path: "ids.csv"
+    fields: 
+      - "id"
+scenarios:
+  - flow:
+    - get:
+        url: "/{{ id }}"

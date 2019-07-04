@@ -19,6 +19,10 @@ $ npm install aws-serverless-fastify
 
 I will provide an example. Soon.
 
+## Performance
+
+Not meant to be exhaustive by any means but here are some basic load tests comparisons through API Gateway. [aws-serverless-fastify](https://benMain.github.io/aws-serverless-fastify/performance/aws-serverless-fastify-results.html) versus [aws-serverless-express](https://benMain.github.io/aws-serverless-fastify/performance/aws-serverless-express-results.html)
+
 ## Support
 
 Pull Requests are welcome! We just thought this was a cool idea to simplify!
