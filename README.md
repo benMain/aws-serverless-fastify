@@ -15,9 +15,79 @@ A port of the AWSLABS [aws-serverless-express](https://github.com/awslabs/aws-se
 $ npm install aws-serverless-fastify
 ```
 
-## Example
+## Examples
 
-I will provide an example. Soon.
+###### Nest
+
+Nest example is provided [here](https://github.com/benMain/aws-serverless-fastify-nest-example).
+I think the lambda-entrypoint.ts is much cleaner.
+You define the app once in app.ts
+main.ts is used for local entrypoint.
+
+lambda-entrypoint.ts
+
+```typescript
+import {
+  Context,
+  APIGatewayProxyEvent,
+  APIGatewayProxyResult,
+} from 'aws-lambda';
+import { bootstrap } from './app';
+import * as fastify from 'fastify';
+import { proxy } from 'aws-serverless-fastify';
+
+let fastifyServer: fastify.FastifyInstance;
+
+export const handler = async (
+  event: APIGatewayProxyEvent,
+  context: Context,
+): Promise<APIGatewayProxyResult> => {
+  if (!fastifyServer) {
+    fastifyServer = await bootstrap();
+  }
+  return await proxy(fastifyServer, event, context);
+};
+```
+
+app.ts
+
+```typescript
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import * as fastify from 'fastify';
+
+export async function bootstrap(): Promise<fastify.FastifyInstance> {
+  const serverOptions: fastify.ServerOptionsAsHttp = {
+    logger: true,
+  };
+  const instance: fastify.FastifyInstance = fastify(serverOptions);
+  const nestApp = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter(instance),
+  );
+  nestApp.setGlobalPrefix('api');
+  nestApp.enableCors();
+  await nestApp.init();
+  return instance;
+}
+```
+
+main.ts
+
+```typescript
+import { bootstrap } from './app';
+
+async function startLocal() {
+  const fastifyInstance = await bootstrap();
+  fastifyInstance.listen(3000);
+}
+
+startLocal();
+```
 
 ## Performance
 
