@@ -48,7 +48,10 @@ export function proxy(
   });
 }
 
-function startFastify(instance: fastify.FastifyInstance, socketSuffix: string): Server {
+function startFastify(
+  instance: fastify.FastifyInstance,
+  socketSuffix: string,
+): Server {
   instance.listen(SocketManager.getSocketPath(socketSuffix));
   return instance.server;
 }

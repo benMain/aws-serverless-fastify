@@ -21,7 +21,7 @@ I will provide an example. Soon.
 
 ## Performance
 
-Not meant to be exhaustive by any means but here are some basic load tests comparisons through API Gateway. [aws-serverless-fastify](https://benMain.github.io/aws-serverless-fastify/performance/aws-serverless-fastify-results.html) versus [aws-serverless-express](https://benMain.github.io/aws-serverless-fastify/performance/aws-serverless-express-results.html)
+Not meant to be exhaustive by any means but here are some basic load tests comparisons through API Gateway via [Artillery](https://artillery.io/). [aws-serverless-fastify](https://benMain.github.io/aws-serverless-fastify/performance/aws-serverless-fastify-results.html) versus [aws-serverless-express](https://benMain.github.io/aws-serverless-fastify/performance/aws-serverless-express-results.html)
 
 ## Support
 

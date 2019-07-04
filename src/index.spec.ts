@@ -45,11 +45,13 @@ describe('proxy()', () => {
   it('forwardRequestToNodeServer(): should forward post request', async () => {
     const postEvent: APIGatewayProxyEvent = buildPostEvent();
     instance.post('/post-test', async (request, reply) => {
-      return { hello: request.body.name};
+      return { hello: request.body.name };
     });
     const response = await proxy(instance, postEvent, context);
     expect(response.statusCode).toEqual(200);
-    expect(JSON.parse(response.body).hello).toEqual(JSON.parse(postEvent.body).name);
+    expect(JSON.parse(response.body).hello).toEqual(
+      JSON.parse(postEvent.body).name,
+    );
     expect(response.isBase64Encoded).toEqual(false);
     await instance.close();
   });
