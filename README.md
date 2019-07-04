@@ -17,14 +17,11 @@ $ npm install aws-serverless-fastify
 
 ## Examples
 
-###### Nest
+### Nest
 
-Nest example is provided [here](https://github.com/benMain/aws-serverless-fastify-nest-example).
-I think the lambda-entrypoint.ts is much cleaner.
-You define the app once in app.ts
-main.ts is used for local entrypoint.
+Nest example is provided [here](https://github.com/benMain/aws-serverless-fastify-nest-example). Below is the summary.
 
-lambda-entrypoint.ts
+lambda-entrypoint.ts (I think the lambda-entrypoint.ts is much cleaner than what is proposed by [Fastify](https://github.com/fastify/fastify/blob/master/docs/Serverless.md))
 
 ```typescript
 import {
@@ -49,7 +46,7 @@ export const handler = async (
 };
 ```
 
-app.ts
+app.ts (Setup the application once in app.ts)
 
 ```typescript
 import { NestFactory } from '@nestjs/core';
@@ -76,7 +73,7 @@ export async function bootstrap(): Promise<fastify.FastifyInstance> {
 }
 ```
 
-main.ts
+main.ts (Will still serve to run the Nest App locally)
 
 ```typescript
 import { bootstrap } from './app';
