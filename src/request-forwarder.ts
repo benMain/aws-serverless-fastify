@@ -30,7 +30,9 @@ export class RequestForwarder {
       );
       if (event.body) {
         const body = RequestMapper.getEventBody(event);
-        req.write(body);
+        const flushed = req.write(body);
+        // tslint:disable-next-line: no-console
+        console.log(`INFO: AwsServerlessFastify Flush Status: ${flushed}`);
       }
       req
         .on('error', error =>
