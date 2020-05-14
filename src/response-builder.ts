@@ -1,7 +1,6 @@
 import { IncomingMessage } from 'http';
 import { APIGatewayProxyResult } from 'aws-lambda';
 import { is } from 'type-is';
-import * as binarycase from 'binary-case';
 
 export class ResponseBuilder {
   public static buildResponseToApiGateway(
@@ -16,28 +15,24 @@ export class ResponseBuilder {
       .on('end', () => {
         const bodyBuffer = Buffer.concat(buf);
         const statusCode = response.statusCode;
-        const headers = response.headers as {
-          [header: string]: string | number | boolean;
-        };
+        const mixedHeaders = response.headers as
+          | APIGatewayProxyResult['headers']
+          | APIGatewayProxyResult['multiValueHeaders'];
+
+        const headers: APIGatewayProxyResult['headers'] = {};
+        const multiValueHeaders: APIGatewayProxyResult['multiValueHeaders'] = {};
+
+        for (const [key, value] of Object.entries(mixedHeaders)) {
+          if (Array.isArray(value)) {
+            multiValueHeaders[key] = value;
+          } else {
+            headers[key] = value;
+          }
+        }
 
         if (headers['transfer-encoding'] === 'chunked') {
           delete headers['transfer-encoding'];
         }
-
-        // HACK: modifies header casing to get around API Gateway's limitation of not allowing multiple
-        // headers with the same name, as discussed on the AWS Forum https://forums.aws.amazon.com/message.jspa?messageID=725953#725953
-        Object.keys(headers).forEach(h => {
-          if (Array.isArray(h)) {
-            if (h.toLowerCase() === 'set-cookie') {
-              h.forEach((value: any, i: number) => {
-                headers[binarycase(h, i + 1)] = value;
-              });
-              delete headers[h];
-            } else {
-              headers[h] = h.join(',');
-            }
-          }
-        });
 
         const contentType = ResponseBuilder.getContentType({
           contentTypeHeader: headers['content-type'],
@@ -51,6 +46,7 @@ export class ResponseBuilder {
           statusCode,
           body,
           headers,
+          multiValueHeaders,
           isBase64Encoded,
         };
 
