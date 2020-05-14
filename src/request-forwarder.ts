@@ -28,12 +28,12 @@ export class RequestForwarder {
           binaryTypes,
         ),
       );
+
       if (event.body) {
         const body = RequestMapper.getEventBody(event);
-        const flushed = req.write(body);
-        // tslint:disable-next-line: no-console
-        console.log(`INFO: AwsServerlessFastify Flush Status: ${flushed}`);
+        req.write(body);
       }
+
       req
         .on('error', error =>
           ResponseBuilder.buildConnectionErrorResponseToApiGateway(
