@@ -42,10 +42,13 @@ export class ResponseBuilder {
         const contentType = ResponseBuilder.getContentType({
           contentTypeHeader: headers['content-type'],
         });
-        const isBase64Encoded = ResponseBuilder.isContentTypeBinaryMimeType({
+        let isBase64Encoded = ResponseBuilder.isContentTypeBinaryMimeType({
           contentType,
           binaryMimeTypes: binaryTypes,
         });
+        if (!isBase64Encoded) {
+          isBase64Encoded = headers['content-encoding'] === 'gzip';
+        }
         const body = bodyBuffer.toString(isBase64Encoded ? 'base64' : 'utf8');
         const successResponse: APIGatewayProxyResult = {
           statusCode,
