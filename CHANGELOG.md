@@ -1,3 +1,5 @@
+## [1.0.24](https://github.com/benMain/aws-serverless-fastify/compare/v1.0.23...v1.0.24) (2020-11-25)
+
 ## [1.0.23](https://github.com/benMain/aws-serverless-fastify/compare/v1.0.22...v1.0.23) (2020-10-15)
 
 ## [1.0.22](https://github.com/benMain/aws-serverless-fastify/compare/v1.0.21...v1.0.22) (2020-10-15)
