@@ -168,5 +168,5 @@
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
-  "version": "1.0.29"
+  "version": "2.0.0"
 }
