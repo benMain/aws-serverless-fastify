@@ -13,6 +13,7 @@ A port of the AWSLABS [aws-serverless-express](https://github.com/awslabs/aws-se
 
 Version 1.x.x compatible with nestjs 7.
 Version 2.x.x compatible with nestjs 8.
+Version 3.x.x compatible with nestjs 9.
 
 ## Installation
 

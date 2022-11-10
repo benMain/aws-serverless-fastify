@@ -46,27 +46,26 @@
     "@semantic-release/git": "^7.0.16",
     "@types/aws-lambda": "^8.10.27",
     "@types/express": "4.17.13",
-    "@types/jest": "^23.3.13",
-    "@types/node": "^10.12.18",
-    "@types/supertest": "^2.0.7",
+    "@types/jest": "^28.1.4",
+    "@types/node": "^18.0.3",
+    "@types/supertest": "^2.0.12",
     "@types/type-is": "^1.6.2",
     "concurrently": "7.2.1",
-    "fastify": "^3.27.0",
+    "fastify": "^4.9.2",
     "husky": "^2.7.0",
-    "jest": "^24.8.0",
+    "jest": "^28.0.5",
     "lint-staged": "^8.2.1",
-    "nodemon": "2.0.16",
-    "prettier": "2.6.2",
+    "prettier": "2.7.1",
     "semantic-release": "^15.13.18",
-    "supertest": "6.2.3",
-    "ts-jest": "24.0.2",
-    "ts-node": "10.8.0",
-    "tsconfig-paths": "3.8.0",
+    "supertest": "6.2.4",
+    "ts-jest": "28.0.5",
+    "ts-node": "10.8.2",
+    "tsconfig-paths": "4.0.0",
     "tslint": "5.16.0",
-    "typescript": "4.7.3"
+    "typescript": "4.7.4"
   },
   "peerDependencies": {
-    "fastify": "^3.27 || ^3.28 || ^3.29"
+    "fastify": "^4.0"
   },
   "release": {
     "branch": "master",
@@ -165,6 +164,9 @@
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },
