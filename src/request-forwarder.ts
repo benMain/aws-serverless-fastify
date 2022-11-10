@@ -16,12 +16,13 @@ export class RequestForwarder {
     binaryTypes: string[],
   ): void {
     try {
-      const requestOptions: RequestOptions = RequestMapper.mapApiGatewayEventToHttpRequest(
-        event,
-        context,
-        server.address().toString(),
-      );
-      const req = request(requestOptions, response =>
+      const requestOptions: RequestOptions =
+        RequestMapper.mapApiGatewayEventToHttpRequest(
+          event,
+          context,
+          server.address().toString(),
+        );
+      const req = request(requestOptions, (response) =>
         ResponseBuilder.buildResponseToApiGateway(
           response,
           resolver,
@@ -35,7 +36,7 @@ export class RequestForwarder {
       }
 
       req
-        .on('error', error =>
+        .on('error', (error) =>
           ResponseBuilder.buildConnectionErrorResponseToApiGateway(
             error,
             resolver,
