@@ -1,5 +1,5 @@
-import { Server, createServer } from 'http';
-import * as fastify from 'fastify';
+import { Server } from 'http';
+import { fastify, FastifyInstance } from 'fastify';
 import { proxy } from './index';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { tmpdir } from 'os';
@@ -7,7 +7,7 @@ import { join } from 'path';
 import { SocketManager } from './socket-manager';
 
 describe('proxy()', () => {
-  let instance: fastify.FastifyInstance;
+  let instance: FastifyInstance;
   let server: Server;
   let event: APIGatewayProxyEvent;
   let context: Context;
@@ -45,7 +45,7 @@ describe('proxy()', () => {
   it('forwardRequestToNodeServer(): should forward post request', async () => {
     const postEvent: APIGatewayProxyEvent = buildPostEvent();
     instance.post('/post-test', async (request, reply) => {
-      return { hello: request.body.name };
+      return { hello: (request.body as any).name };
     });
     const response = await proxy(instance, postEvent, context);
     expect(response.statusCode).toEqual(200);

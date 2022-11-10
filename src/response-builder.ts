@@ -26,7 +26,7 @@ export class ResponseBuilder {
 
         // HACK: modifies header casing to get around API Gateway's limitation of not allowing multiple
         // headers with the same name, as discussed on the AWS Forum https://forums.aws.amazon.com/message.jspa?messageID=725953#725953
-        Object.keys(headers).forEach(h => {
+        Object.keys(headers).forEach((h) => {
           if (Array.isArray(h)) {
             if (h.toLowerCase() === 'set-cookie') {
               h.forEach((value: any, i: number) => {

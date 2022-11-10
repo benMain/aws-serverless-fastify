@@ -9,6 +9,11 @@
 A port of the AWSLABS [aws-serverless-express](https://github.com/awslabs/aws-serverless-express) library tailor made for the
 [Fastify](https://www.fastify.io/) web framework. Inspired by wanting to use the Fastify gracefully in [Nest](https://docs.nestjs.com/) projects with Lambda. Plus it's called Fastify, how cool is that!
 
+## Nest Compatibility
+
+Version 1.x.x compatible with nestjs 7.
+Version 2.x.x compatible with nestjs 8.
+
 ## Installation
 
 ```bash
