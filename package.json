@@ -30,8 +30,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
-    "lint": "tslint -p tsconfig.json -c tslint.json",
-    "test": "jest --detectOpenHandles",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "release": "semantic-release",
@@ -42,31 +42,32 @@
     "type-is": "^1.6.18"
   },
   "devDependencies": {
+    "@nestjs/testing": "^9.0.0",
     "@semantic-release/changelog": "^3.0.4",
     "@semantic-release/git": "^7.0.16",
     "@types/aws-lambda": "^8.10.27",
-    "@types/express": "4.17.13",
-    "@types/jest": "^23.3.13",
-    "@types/node": "^10.12.18",
-    "@types/supertest": "^2.0.7",
-    "@types/type-is": "^1.6.2",
-    "concurrently": "7.2.1",
-    "fastify": "^3.27.0",
-    "husky": "^2.7.0",
-    "jest": "^24.8.0",
-    "lint-staged": "^8.2.1",
-    "nodemon": "2.0.16",
-    "prettier": "2.6.2",
+    "@types/jest": "28.1.8",
+    "@types/node": "16.0.0",
+    "@types/supertest": "2.0.11",
+    "@types/type-is": "1.6.2",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "fastify": "4.2.0",
+    "jest": "28.1.3",
+    "prettier": "^2.3.2",
     "semantic-release": "^15.13.18",
-    "supertest": "6.2.3",
-    "ts-jest": "24.0.2",
-    "ts-node": "10.8.0",
-    "tsconfig-paths": "3.8.0",
-    "tslint": "5.16.0",
-    "typescript": "4.7.3"
+    "supertest": "6.1.3",
+    "ts-jest": "28.0.8",
+    "ts-loader": "9.2.3",
+    "ts-node": "^10.0.0",
+    "tsconfig-paths": "4.1.0",
+    "typescript": "4.7.4"
   },
   "peerDependencies": {
-    "fastify": "^3.0"
+    "fastify": "^4.0"
   },
   "release": {
     "branch": "master",
@@ -139,21 +140,6 @@
       ]
     ]
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "tslint -p tsconfig.json -c tslint.json",
-      "jest --findRelatedTests"
-    ],
-    "./**/*.{js,json,css,md}": [
-      "prettier --write \"src/**/*.ts\"",
-      "git add"
-    ]
-  },
   "jest": {
     "moduleFileExtensions": [
       "js",
@@ -161,10 +147,13 @@
       "ts"
     ],
     "rootDir": "src",
-    "testRegex": ".spec.ts$",
+    "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
   },

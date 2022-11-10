@@ -1,4 +1,3 @@
-import { Server } from 'http';
 import { fastify, FastifyInstance } from 'fastify';
 import { proxy } from './index';
 import { APIGatewayProxyEvent, Context } from 'aws-lambda';
@@ -8,12 +7,10 @@ import { SocketManager } from './socket-manager';
 
 describe('proxy()', () => {
   let instance: FastifyInstance;
-  let server: Server;
   let event: APIGatewayProxyEvent;
   let context: Context;
   beforeEach(async () => {
     instance = fastify({ logger: true });
-    server = instance.server;
     event = buildGetEvent();
     context = buildContext();
   });
@@ -115,7 +112,9 @@ function buildContext(): Context {
     fail: (error: Error | string) => null,
     /* tslint:disable:no-empty */
 
-    succeed: () => {},
+    succeed: () => {
+      'blah';
+    },
   };
 }
 
