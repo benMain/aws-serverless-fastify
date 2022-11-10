@@ -51,7 +51,7 @@
     "@types/supertest": "^2.0.7",
     "@types/type-is": "^1.6.2",
     "concurrently": "^4.1.0",
-    "fastify": "^2.6.0",
+    "fastify": "^3.27.0",
     "husky": "^2.7.0",
     "jest": "^24.8.0",
     "lint-staged": "^8.2.1",
@@ -67,7 +67,7 @@
     "wait-on": "^3.2.0"
   },
   "peerDependencies": {
-    "fastify": "^2.6.0"
+    "fastify": "^3.27.0"
   },
   "release": {
     "branch": "master",
@@ -93,6 +93,10 @@
             {
               "type": "style",
               "release": "patch"
+            },
+            {
+              "type": "nestcompat",
+              "release": "major"
             }
           ],
           "parserOpts": {
