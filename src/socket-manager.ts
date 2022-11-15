@@ -1,6 +1,7 @@
 export class SocketManager {
   public static getSocketPath(socketPathSuffix: string): string {
     if (/^win/.test(process.platform)) {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const path = require('path');
       return path.join(
         '\\\\?\\pipe',
