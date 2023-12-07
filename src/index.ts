@@ -52,6 +52,6 @@ function startFastify(
   instance: fastify.FastifyInstance,
   socketSuffix: string,
 ): Server {
-  instance.listen(SocketManager.getSocketPath(socketSuffix));
+  instance.listen({ path: SocketManager.getSocketPath(socketSuffix) });
   return instance.server;
 }
