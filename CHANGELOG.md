@@ -1,3 +1,10 @@
+## [3.0.5](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.4...v3.0.5) (2023-12-08)
+
+
+### Bug Fixes
+
+* use options object on instance.listen ([cc2820a](https://github.com/benMain/aws-serverless-fastify/commit/cc2820a))
+
 ## [3.0.4](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.3...v3.0.4) (2023-06-20)
 
 ## [3.0.3](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.2...v3.0.3) (2023-06-08)
