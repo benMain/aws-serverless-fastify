@@ -21,7 +21,7 @@ describe('proxy()', () => {
     instance.get('/hello', async (request, reply) => {
       return exampleResponse;
     });
-    await instance.listen(sockFile);
+    await instance.listen({ path: sockFile });
     const response = await proxy(instance, event, context);
     expect(response.statusCode).toEqual(200);
     expect(JSON.parse(response.body)).toEqual(exampleResponse);
