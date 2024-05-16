@@ -1,3 +1,11 @@
+# [3.1.0](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.7...v3.1.0) (2024-05-16)
+
+
+### Features
+
+* **NestJs10Compatibility:** Add compatibility for NestJs10. ([4a7f466](https://github.com/benMain/aws-serverless-fastify/commit/4a7f466dc380f2bc8ae6a5d1da79154fbd909254))
+* **NestJs10Compatibility:** Add compatibility for NestJs10. ([fbb4eb2](https://github.com/benMain/aws-serverless-fastify/commit/fbb4eb2394b1eebf143e92c3171c44239bf5617f))
+
 ## [3.0.7](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.6...v3.0.7) (2024-05-16)
 
 ## [3.0.6](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.5...v3.0.6) (2023-12-14)
