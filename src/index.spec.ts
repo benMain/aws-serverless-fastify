@@ -18,7 +18,7 @@ describe('proxy()', () => {
     const exampleResponse = { hello: 'world' };
     const random = SocketManager.getSocketSuffix();
     const sockFile = join(tmpdir(), `${random}server.sock`);
-    instance.get('/hello', async (request, reply) => {
+    instance.get('/hello', async () => {
       return exampleResponse;
     });
     await instance.listen({ path: sockFile });
@@ -30,7 +30,7 @@ describe('proxy()', () => {
   });
   it('forwardRequestToNodeServer(): should forward get request and start not listening server', async () => {
     const exampleResponse = { hello: 'world' };
-    instance.get('/hello', async (request, reply) => {
+    instance.get('/hello', async () => {
       return exampleResponse;
     });
     const response = await proxy(instance, event, context);
@@ -41,7 +41,7 @@ describe('proxy()', () => {
   });
   it('forwardRequestToNodeServer(): should forward post request', async () => {
     const postEvent: APIGatewayProxyEvent = buildPostEvent();
-    instance.post('/post-test', async (request, reply) => {
+    instance.post('/post-test', async (request) => {
       return { hello: (request.body as any).name };
     });
     const response = await proxy(instance, postEvent, context);
@@ -55,7 +55,7 @@ describe('proxy()', () => {
 
   it('forwardRequestToNodeServer(): should respond with 404 when endpoint not found', async () => {
     const exampleResponse = { hello: 'world' };
-    instance.get('/incorrect', async (request, reply) => {
+    instance.get('/incorrect', async () => {
       return exampleResponse;
     });
     const response = await proxy(instance, event, context);
@@ -106,10 +106,10 @@ function buildContext(): Context {
     awsRequestId: null,
     logGroupName: null,
     logStreamName: null,
-    memoryLimitInMB: 1024,
+    memoryLimitInMB: '1024',
     getRemainingTimeInMillis: () => 1000,
-    done: (error?: Error, result?: any) => null,
-    fail: (error: Error | string) => null,
+    done: () => null,
+    fail: () => null,
     /* tslint:disable:no-empty */
 
     succeed: () => {
