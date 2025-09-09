@@ -1,3 +1,11 @@
+## [3.1.1](https://github.com/benMain/aws-serverless-fastify/compare/v3.1.0...v3.1.1) (2025-09-09)
+
+
+### Bug Fixes
+
+* **versions:** update library versions. ([d14be7b](https://github.com/benMain/aws-serverless-fastify/commit/d14be7b571c8060b9e401ac299f2676a8cbb51ee))
+* **versions:** update library versions. ([35edbb2](https://github.com/benMain/aws-serverless-fastify/commit/35edbb24671a1e1ffa4d9d002de143e1497e4c37))
+
 # [3.1.0](https://github.com/benMain/aws-serverless-fastify/compare/v3.0.7...v3.1.0) (2024-05-16)
 
 
