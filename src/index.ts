@@ -13,7 +13,10 @@ export function proxy(
   fastifyInstance: fastify.FastifyInstance,
   event: APIGatewayProxyEvent | ALBEvent,
   context: Context,
-  binaryTypes?: string[],
+  options?: {
+    binaryTypes?: string[];
+    useMultiValueHeaders?: boolean;
+  },
 ): Promise<APIGatewayProxyResult> {
   return new Promise<APIGatewayProxyResult>((resolve, reject) => {
     const promise = {
@@ -25,14 +28,14 @@ export function proxy(
         return promise.resolve(data);
       },
     };
-    binaryTypes = binaryTypes ? binaryTypes.slice() : [];
+    const binaryTypes = options?.binaryTypes ? options.binaryTypes.slice() : [];
     if (fastifyInstance.server.listening) {
       RequestForwarder.forwardRequestToNodeServer(
         fastifyInstance.server,
         event,
-        context,
         resolver,
         binaryTypes,
+        options?.useMultiValueHeaders ?? false,
       );
     } else {
       const socketSuffix = SocketManager.getSocketSuffix();
@@ -40,9 +43,9 @@ export function proxy(
         RequestForwarder.forwardRequestToNodeServer(
           fastifyInstance.server,
           event,
-          context,
           resolver,
           binaryTypes,
+          options?.useMultiValueHeaders ?? false,
         ),
       );
     }

@@ -1,17 +1,16 @@
-import { ALBEvent, APIGatewayProxyEvent, Context } from 'aws-lambda';
+import { ALBEvent, APIGatewayProxyEvent } from 'aws-lambda';
 import { format } from 'url';
 import { RequestOptions } from 'http';
 
 export class RequestMapper {
   public static mapApiGatewayEventToHttpRequest(
     event: APIGatewayProxyEvent | ALBEvent,
-    context: Context,
     socketPath: string,
+    useMultiValueHeaders: boolean,
   ): RequestOptions {
-    const headers: { [name: string]: any } = {
-      ...event.headers,
-      ...RequestMapper.reduceArrayProperties(event.multiValueHeaders),
-    };
+    const headers: { [name: string]: any } = useMultiValueHeaders
+      ? { ...RequestMapper.reduceArrayProperties(event.multiValueHeaders) }
+      : { ...event.headers };
 
     if (event.body && !headers['Content-Length']) {
       const body = RequestMapper.getEventBody(event);
@@ -20,7 +19,10 @@ export class RequestMapper {
 
     return {
       method: event.httpMethod,
-      path: RequestMapper.getPathWithQueryStringParams(event),
+      path: RequestMapper.getPathWithQueryStringParams(
+        event,
+        useMultiValueHeaders,
+      ),
       headers,
       socketPath,
     };
@@ -28,10 +30,11 @@ export class RequestMapper {
 
   private static getPathWithQueryStringParams(
     event: APIGatewayProxyEvent | ALBEvent,
+    useMultiValueHeaders: boolean,
   ): string {
     return format({
       pathname: event.path,
-      query: event?.multiValueQueryStringParameters
+      query: useMultiValueHeaders
         ? RequestMapper.reduceArrayProperties(
             event?.multiValueQueryStringParameters,
           )
