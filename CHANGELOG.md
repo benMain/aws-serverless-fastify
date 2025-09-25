@@ -1,3 +1,10 @@
+## [3.1.3](https://github.com/benMain/aws-serverless-fastify/compare/v3.1.2...v3.1.3) (2025-09-25)
+
+
+### Bug Fixes
+
+* **MultiValueHeaders:** Respond with multiValueHeaders. ([7491701](https://github.com/benMain/aws-serverless-fastify/commit/74917014fcffb54ce994e2215647d6fd2cb4a0c2))
+
 ## [3.1.2](https://github.com/benMain/aws-serverless-fastify/compare/v3.1.1...v3.1.2) (2025-09-25)
 
 ## [3.1.1](https://github.com/benMain/aws-serverless-fastify/compare/v3.1.0...v3.1.1) (2025-09-09)
