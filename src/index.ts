@@ -3,6 +3,7 @@ import {
   APIGatewayProxyEvent,
   Context,
   APIGatewayProxyResult,
+  ALBEvent,
 } from 'aws-lambda';
 import { RequestForwarder } from './request-forwarder';
 import { SocketManager } from './socket-manager';
@@ -10,7 +11,7 @@ import * as fastify from 'fastify';
 
 export function proxy(
   fastifyInstance: fastify.FastifyInstance,
-  event: APIGatewayProxyEvent,
+  event: APIGatewayProxyEvent | ALBEvent,
   context: Context,
   binaryTypes?: string[],
 ): Promise<APIGatewayProxyResult> {
