@@ -3,6 +3,7 @@ import {
   APIGatewayProxyEvent,
   Context,
   APIGatewayProxyResult,
+  ALBEvent,
 } from 'aws-lambda';
 import { RequestMapper } from './request-mapper';
 import { ResponseBuilder } from './response-builder';
@@ -10,7 +11,7 @@ import { ResponseBuilder } from './response-builder';
 export class RequestForwarder {
   public static forwardRequestToNodeServer(
     server: Server,
-    event: APIGatewayProxyEvent,
+    event: APIGatewayProxyEvent | ALBEvent,
     context: Context,
     resolver: { succeed: (data: APIGatewayProxyResult) => void },
     binaryTypes: string[],

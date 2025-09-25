@@ -4,14 +4,17 @@ import { APIGatewayProxyEvent, Context } from 'aws-lambda';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { SocketManager } from './socket-manager';
+import { RequestMapper } from './request-mapper';
 
 describe('proxy()', () => {
   let instance: FastifyInstance;
   let event: APIGatewayProxyEvent;
+  let multiValueEvent: APIGatewayProxyEvent;
   let context: Context;
   beforeEach(async () => {
     instance = fastify({ logger: true });
     event = buildGetEvent();
+    multiValueEvent = buildMultiValueGetEvent();
     context = buildContext();
   });
   it('forwardRequestToNodeServer(): should forward get request with listening server', async () => {
@@ -38,6 +41,20 @@ describe('proxy()', () => {
     expect(JSON.parse(response.body)).toEqual(exampleResponse);
     expect(response.isBase64Encoded).toEqual(false);
     await instance.close();
+  });
+
+  it('RequestMapper: should map our multiValueEvent correctly', async () => {
+    const httpRequest = RequestMapper.mapApiGatewayEventToHttpRequest(
+      multiValueEvent,
+      context,
+      'test',
+    );
+    expect(httpRequest).toBeDefined();
+    expect(httpRequest.method).toEqual('GET');
+    expect(httpRequest.path).toEqual(
+      '/Patient?birthdate=gt1960-01-01&birthdate=lt1970-01-01',
+    );
+    expect(httpRequest.headers['accept']).toEqual('application/json');
   });
   it('forwardRequestToNodeServer(): should forward post request', async () => {
     const postEvent: APIGatewayProxyEvent = buildPostEvent();
@@ -91,6 +108,32 @@ function buildGetEvent(): APIGatewayProxyEvent {
     pathParameters: null,
     queryStringParameters: null,
     multiValueQueryStringParameters: null,
+    stageVariables: null,
+    requestContext: null,
+    resource: null,
+  };
+}
+
+function buildMultiValueGetEvent(): APIGatewayProxyEvent {
+  return {
+    body: null,
+    headers: {},
+    multiValueHeaders: {
+      accept: ['application/json'],
+      'accept-encoding': ['gzip, deflate, sdch'],
+      authorization: ['Bearer token', 'Basic token'],
+      'accept-language': ['en-US,en;q=0.8'],
+      'cache-control': ['max-age=0'],
+      'cloudfront-forwarded-proto': ['https'],
+    },
+    httpMethod: 'GET',
+    isBase64Encoded: false,
+    path: '/Patient',
+    pathParameters: null,
+    queryStringParameters: null,
+    multiValueQueryStringParameters: {
+      birthdate: ['gt1960-01-01', 'lt1970-01-01'],
+    },
     stageVariables: null,
     requestContext: null,
     resource: null,
