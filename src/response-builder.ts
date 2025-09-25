@@ -8,6 +8,7 @@ export class ResponseBuilder {
     response: IncomingMessage,
     resolver: { succeed: (data: APIGatewayProxyResult) => void },
     binaryTypes: string[],
+    useMultiValueHeaders: boolean,
   ) {
     const buf = [];
 
@@ -53,12 +54,30 @@ export class ResponseBuilder {
         const successResponse: APIGatewayProxyResult = {
           statusCode,
           body,
-          headers,
           isBase64Encoded,
+          headers: useMultiValueHeaders ? undefined : headers,
+          multiValueHeaders: useMultiValueHeaders
+            ? ResponseBuilder.mapHeadersToMultiValueHeaders(headers)
+            : undefined,
         };
 
         resolver.succeed(successResponse);
       });
+  }
+
+  private static mapHeadersToMultiValueHeaders(headers: {
+    [header: string]: string | number | boolean;
+  }) {
+    const response: { [header: string]: (string | number | boolean)[] } = {};
+    Object.keys(headers).forEach((header) => {
+      const value = headers[header];
+      if (Array.isArray(value)) {
+        response[header] = value;
+      } else {
+        response[header] = [value];
+      }
+    });
+    return response;
   }
 
   public static buildConnectionErrorResponseToApiGateway(

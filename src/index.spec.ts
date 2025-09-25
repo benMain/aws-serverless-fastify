@@ -46,8 +46,8 @@ describe('proxy()', () => {
   it('RequestMapper: should map our multiValueEvent correctly', async () => {
     const httpRequest = RequestMapper.mapApiGatewayEventToHttpRequest(
       multiValueEvent,
-      context,
       'test',
+      true,
     );
     expect(httpRequest).toBeDefined();
     expect(httpRequest.method).toEqual('GET');

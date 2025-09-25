@@ -1,7 +1,6 @@
 import { request, Server, RequestOptions } from 'http';
 import {
   APIGatewayProxyEvent,
-  Context,
   APIGatewayProxyResult,
   ALBEvent,
 } from 'aws-lambda';
@@ -12,22 +11,23 @@ export class RequestForwarder {
   public static forwardRequestToNodeServer(
     server: Server,
     event: APIGatewayProxyEvent | ALBEvent,
-    context: Context,
     resolver: { succeed: (data: APIGatewayProxyResult) => void },
     binaryTypes: string[],
+    useMultiValueHeaders: boolean,
   ): void {
     try {
       const requestOptions: RequestOptions =
         RequestMapper.mapApiGatewayEventToHttpRequest(
           event,
-          context,
           server.address().toString(),
+          useMultiValueHeaders,
         );
       const req = request(requestOptions, (response) =>
         ResponseBuilder.buildResponseToApiGateway(
           response,
           resolver,
           binaryTypes,
+          useMultiValueHeaders,
         ),
       );
 
